@@ -11,6 +11,7 @@ public class DijkstraPathFinder implements PathFinder{
 	List<Node> coordinates;
 	int length = 0;
 	PathMap map;
+	int finalLength = 0;
 	
 	public DijkstraPathFinder(PathMap map) {
 		
@@ -21,26 +22,29 @@ public class DijkstraPathFinder implements PathFinder{
 		
 		for(int r=0;r<map.sizeR;r++) {	// ADD cells to unexplored
 			for(int c=0;c<map.sizeC;c++) {
-				boolean origin = false;
-				map.cells[r][c].setValue(1000);
-				for(int o=0;o<map.originCells.size();o++) {
-					if(map.originCells.contains(map.cells[r][c])) {	// if origin
-						map.cells[r][c].setValue(0);
-						S.add(new Node(map.cells[r][c],null));
-						origin = true;
+				if(map.cells[r][c].getImpassable() == false) {
+					boolean origin = false;
+					map.cells[r][c].setValue(1000);
+					for(int o=0;o<map.originCells.size();o++) {
+						if(map.originCells.contains(map.cells[r][c])) {	// if origin
+							map.cells[r][c].setValue(0);
+							S.add(new Node(map.cells[r][c],null));
+							origin = true;
+						}
 					}
-				}
-				if(!origin) {
-					coordinates.add(new Node(map.cells[r][c],null));
+					if(!origin) {
+						coordinates.add(new Node(map.cells[r][c],null));
+					}
 				}	
 			}
 		}
+		finalLength = coordinates.size();
     }
 
 	@Override
 	public List<Coordinate> findPath() {
 		
-		while(length != map.sizeC * map.sizeR - 1) { // while isn't destination
+		while(length != finalLength) { // while isn't destination
 			
 			int col = S.get(length).getCoordinate().getColumn();
 	    	int row = S.get(length).getCoordinate().getRow();
