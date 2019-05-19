@@ -12,7 +12,7 @@ public class Tester {
 		List<Coordinate> originCells = new ArrayList<Coordinate>();
 		List<Coordinate> destCells = new ArrayList<Coordinate>();
 		Set<Coordinate> impassableCells = new HashSet<Coordinate>();
-		Map<Coordinate,Integer> terrainCells = null;
+		Map<Coordinate,Integer> terrainCells = new HashMap<Coordinate,Integer>();
 		List<Coordinate> waypointCells = null;
 		
 		impassableCells.add(new Coordinate(2,2));
@@ -24,6 +24,8 @@ public class Tester {
 		impassableCells.add(new Coordinate(1,3));
 		impassableCells.add(new Coordinate(2,4));
 		
+		terrainCells.put(new Coordinate(5,2), 6);
+		terrainCells.put(new Coordinate(6,2), 6);
 		
 		PathMap map = new PathMap();
 		//map.initMap(rowNum, colNum, originCells, destCells, impassableCells, terrainCells, waypointCells);
@@ -42,20 +44,24 @@ public class Tester {
                     coord.setImpassable(true);
                     //System.out.println("impassable");
                 }
-                /*
+                
                 // add terrain information
                 // should not be both
                 if (terrainCells.containsKey(coord)) {
                     int cost = terrainCells.get(coord).intValue();
                     coord.setTerrainCost(cost);
-                }*/
+                    //System.out.println("terrain");
+                }
 
                 map.cells[i][j] = coord;
             }
         }
         
         destCells.add(new Coordinate(4,5));
+        destCells.add(new Coordinate(5,4));
+        originCells.add(new Coordinate(2,1));
         originCells.add(new Coordinate(2,0));
+        
 
         map.destCells = destCells;
         map.originCells = originCells;

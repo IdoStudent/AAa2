@@ -24,13 +24,11 @@ public class DijkstraPathFinder implements PathFinder{
 				if(map.cells[r][c].getImpassable() == false) {
 					boolean origin = false;
 					map.cells[r][c].setValue(1000);						//set to infinity
-					for(int o=0;o<map.originCells.size();o++) {
 						if(map.originCells.contains(map.cells[r][c])) {	// if origin
 							map.cells[r][c].setValue(0);
 							S.add(new Node(map.cells[r][c],null));
 							origin = true;
 						}
-					}
 					if(!origin) {	// if not origin
 						coordinates.add(new Node(map.cells[r][c],null));
 					}
@@ -43,7 +41,7 @@ public class DijkstraPathFinder implements PathFinder{
 	@Override
 	public List<Coordinate> findPath() {
 		
-		while(count != length) { // while haven't explored all coordinates
+		while(coordinates.isEmpty() == false) { // while haven't explored all coordinates
 			
 			int col = S.get(count).getCoordinate().getColumn();				//explored next from S
 	    	int row = S.get(count).getCoordinate().getRow();
@@ -63,8 +61,11 @@ public class DijkstraPathFinder implements PathFinder{
 				   coordinates.get(i).getCoordinate().getRow() == row &&
 		           !coordinates.get(i).getCoordinate().getImpassable())) {
 	    				
-	    				if(coordinates.get(i).getCoordinate().getValue() > (currentValue + 1)) {	//if new value is smaller
-	    					coordinates.get(i).getCoordinate().setValue(currentValue + 1);	//update value
+	    				System.out.println("S: " + S.get(count).getCoordinate());
+	    				System.out.print("check " + coordinates.get(i).getCoordinate());
+	    				System.out.println(" new value: " + (currentValue + coordinates.get(i).getCoordinate().getTerrainCost()));
+	    				if(coordinates.get(i).getCoordinate().getValue() > (currentValue + coordinates.get(i).getCoordinate().getTerrainCost())) {	//if new value is smaller
+	    					coordinates.get(i).getCoordinate().setValue(currentValue + coordinates.get(i).getCoordinate().getTerrainCost());	//update value
 	    					coordinates.get(i).setPrevious(S.get(count));					//update previous node
 	    					System.out.println("update: " + coordinates.get(i).getCoordinate() + " previous: " + S.get(count).getCoordinate());
 	    				}
@@ -77,18 +78,25 @@ public class DijkstraPathFinder implements PathFinder{
 		
 		//create a list with path
 		List<Coordinate> path = new ArrayList<Coordinate>();
-		Node tempNode = S.get(count);
-		for(int i=0;i<map.destCells.size();i++) {								// search from destination
+		Node tempNode = S.get(S.size() -1);
+		int desValue = 1000;
+		for(int i=0;i<map.destCells.size();i++) {								// search for lowest value destination
 			for(int k=0;k<S.size();k++) {
-				if (S.get(k).getCoordinate().equals(map.destCells.get(i))){
+				if (S.get(k).getCoordinate().equals(map.destCells.get(i)) && S.get(k).getCoordinate().getValue() < desValue){
 					tempNode = S.get(k);
+					desValue = S.get(k).getCoordinate().getValue();
 				}
 			}
 		}
-		int pathLength = tempNode.getCoordinate().getValue();
-		for(int i=0;i<pathLength+1;i++) {
+		System.out.println(tempNode.getCoordinate());
+		boolean des = false;
+		while(!des) {
 			path.add(tempNode.getCoordinate());						// add to path
+			if(map.originCells.contains(tempNode.getCoordinate())) {
+				des = true;
+			}
 			tempNode = tempNode.getPrevious();						// get the previous node
+			//System.out.println("add");
 		}
 		
 		for(int i=0;i<path.size();i++) {	// print path
@@ -104,19 +112,24 @@ public class DijkstraPathFinder implements PathFinder{
 	
 	public void find() {
 		//find smallest value
-		Node tempNode = coordinates.get(0);
-    	int lowest = coordinates.get(0).getCoordinate().getValue();
-    	int toDelete = 0;
-    	for(int i=0;i<coordinates.size();i++) {
-    		if(coordinates.get(i).getCoordinate().getValue() < lowest) {
-    			System.out.println("lower " + coordinates.get(i) + " value: " + coordinates.get(i).getCoordinate().getValue());
-    			lowest = coordinates.get(i).getCoordinate().getValue();
-    			tempNode = coordinates.get(i);
-    			toDelete = i;
-    		}
-    	}
-    	System.out.println("add " + coordinates.get(toDelete).getCoordinate() + " value: " + coordinates.get(toDelete).getCoordinate().getValue());
-    	coordinates.remove(toDelete);	//remove from coordinates
-    	S.add(tempNode);				//add to S
+		if(coordinates.isEmpty() == false) {
+			Node tempNode = coordinates.get(0);
+	    	int lowest = coordinates.get(0).getCoordinate().getValue();
+	    	int toDelete = 0;
+	    	for(int i=0;i<coordinates.size();i++) {
+	    		if(coordinates.get(i).getCoordinate().getValue() < lowest) {
+	    			//System.out.println("lower " + coordinates.get(i) + " value: " + coordinates.get(i).getCoordinate().getValue());
+	    			lowest = coordinates.get(i).getCoordinate().getValue();
+	    			tempNode = coordinates.get(i);
+	    			toDelete = i;
+	    		}
+	    	}
+	    	System.out.println("add " + coordinates.get(toDelete).getCoordinate() + " value: " + coordinates.get(toDelete).getCoordinate().getValue());
+	    	coordinates.remove(toDelete);	//remove from coordinates
+	    	S.add(tempNode);				//add to S
+//	    	for(int i=0;i<S.size();i++) {
+//	    		System.out.println(S.get(i).getCoordinate());
+//	    	}
+		}
 	}
 }
