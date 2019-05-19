@@ -7,8 +7,6 @@ public class Tester {
 
 	public static void main(String[] args) {
 		
-		int rowNum = 3;
-		int colNum = 3;
 		List<Coordinate> originCells = new ArrayList<Coordinate>();
 		List<Coordinate> destCells = new ArrayList<Coordinate>();
 		Set<Coordinate> impassableCells = new HashSet<Coordinate>();

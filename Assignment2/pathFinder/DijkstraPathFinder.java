@@ -61,13 +61,13 @@ public class DijkstraPathFinder implements PathFinder{
 				   coordinates.get(i).getCoordinate().getRow() == row &&
 		           !coordinates.get(i).getCoordinate().getImpassable())) {
 	    				
-	    				System.out.println("S: " + S.get(count).getCoordinate());
-	    				System.out.print("check " + coordinates.get(i).getCoordinate());
-	    				System.out.println(" new value: " + (currentValue + coordinates.get(i).getCoordinate().getTerrainCost()));
+	    				//System.out.println("S: " + S.get(count).getCoordinate());
+	    				//System.out.print("check " + coordinates.get(i).getCoordinate());
+	    				//System.out.println(" new value: " + (currentValue + coordinates.get(i).getCoordinate().getTerrainCost()));
 	    				if(coordinates.get(i).getCoordinate().getValue() > (currentValue + coordinates.get(i).getCoordinate().getTerrainCost())) {	//if new value is smaller
 	    					coordinates.get(i).getCoordinate().setValue(currentValue + coordinates.get(i).getCoordinate().getTerrainCost());	//update value
 	    					coordinates.get(i).setPrevious(S.get(count));					//update previous node
-	    					System.out.println("update: " + coordinates.get(i).getCoordinate() + " previous: " + S.get(count).getCoordinate());
+	    					//System.out.println("update: " + coordinates.get(i).getCoordinate() + " previous: " + S.get(count).getCoordinate());
 	    				}
 	    		}
 	    	}
@@ -88,7 +88,7 @@ public class DijkstraPathFinder implements PathFinder{
 				}
 			}
 		}
-		System.out.println(tempNode.getCoordinate());
+		//System.out.println(tempNode.getCoordinate());
 		boolean des = false;
 		while(!des) {
 			path.add(tempNode.getCoordinate());						// add to path
@@ -124,7 +124,7 @@ public class DijkstraPathFinder implements PathFinder{
 	    			toDelete = i;
 	    		}
 	    	}
-	    	System.out.println("add " + coordinates.get(toDelete).getCoordinate() + " value: " + coordinates.get(toDelete).getCoordinate().getValue());
+	    	//System.out.println("add " + coordinates.get(toDelete).getCoordinate() + " value: " + coordinates.get(toDelete).getCoordinate().getValue());
 	    	coordinates.remove(toDelete);	//remove from coordinates
 	    	S.add(tempNode);				//add to S
 //	    	for(int i=0;i<S.size();i++) {
