@@ -106,8 +106,7 @@ public class DijkstraPathFinder implements PathFinder{
 	}
 	
 	public int coordinatesExplored() {
-        // placeholder
-        return 0;
+        return S.size();
     } // end of cellsExplored()
 	
 	public void find() {
