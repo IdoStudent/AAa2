@@ -9,6 +9,7 @@ public class DijkstraPathFinder implements PathFinder{
 	
 	List<Node> S;			//set of explored coordinates
 	List<Node> coordinates;	//set of all passable coordinates
+	List<Coordinate> waypoints;
 	int count = 0;			//counts elements in S
 	PathMap map;
 	int length = 0;			//amount of initial coordinates
@@ -18,6 +19,7 @@ public class DijkstraPathFinder implements PathFinder{
 		this.map = map;
 		S = new ArrayList<Node>();
 		coordinates = new ArrayList<Node>();
+		waypoints = map.waypointCells;
 		
 		for(int r=0;r<map.sizeR;r++) {	// ADD cells to coordinates list
 			for(int c=0;c<map.sizeC;c++) {
@@ -75,33 +77,72 @@ public class DijkstraPathFinder implements PathFinder{
 			count++;
 		}
 		
-		
-		//create a list with path
 		List<Coordinate> path = new ArrayList<Coordinate>();
-		Node tempNode = S.get(S.size() -1);
-		int desValue = 1000;
-		for(int i=0;i<map.destCells.size();i++) {								// search for lowest value destination
-			for(int k=0;k<S.size();k++) {
-				if (S.get(k).getCoordinate().equals(map.destCells.get(i)) && S.get(k).getCoordinate().getValue() < desValue){
-					tempNode = S.get(k);
-					desValue = S.get(k).getCoordinate().getValue();
+		
+		if(waypoints == null) {
+			
+			//create a list with path
+			Node tempNode = S.get(S.size() -1);
+			int desValue = 1000;
+			for(int i=0;i<map.destCells.size();i++) {								// search for lowest value destination
+				for(int k=0;k<S.size();k++) {
+					if (S.get(k).getCoordinate().equals(map.destCells.get(i)) && S.get(k).getCoordinate().getValue() < desValue){
+						tempNode = S.get(k);
+						desValue = S.get(k).getCoordinate().getValue();
+					}
 				}
 			}
-		}
-		//System.out.println(tempNode.getCoordinate());
-		boolean des = false;
-		while(!des) {
-			path.add(tempNode.getCoordinate());						// add to path
-			if(map.originCells.contains(tempNode.getCoordinate())) {
-				des = true;
+			
+			//System.out.println(tempNode.getCoordinate());
+			boolean des = false;
+			while(!des) {
+				path.add(tempNode.getCoordinate());						// add to path
+				if(map.originCells.contains(tempNode.getCoordinate())) {
+					des = true;
+				}
+				tempNode = tempNode.getPrevious();						// get the previous node
+				//System.out.println("add");
 			}
-			tempNode = tempNode.getPrevious();						// get the previous node
-			//System.out.println("add");
+
+		}
+		
+		else {
+			
+			for(int i=0; i<waypoints.size();i++) {
+				for(int j=0; j<waypoints.size();j++) {
+					
+					//create a list with path
+					Node tempNode = S.get(S.size() -1);
+					int desValue = 1000;
+					
+					for(int k=0;k<map.destCells.size();k++) {								// search for lowest value destination
+						for(int l=0;l<S.size();l++) {
+							if (S.get(k).getCoordinate().equals(map.destCells.get(i)) && S.get(k).getCoordinate().getValue() < desValue){
+								tempNode = S.get(k);
+								desValue = S.get(k).getCoordinate().getValue();
+							}
+						}
+					}
+					
+					//System.out.println(tempNode.getCoordinate());
+					boolean des = false;
+					while(!des) {
+						path.add(tempNode.getCoordinate());						// add to path
+						if(map.originCells.contains(tempNode.getCoordinate())) {
+							des = true;
+						}
+						tempNode = tempNode.getPrevious();						// get the previous node
+						//System.out.println("add");
+					}
+				}
+			}
+			
 		}
 		
 		for(int i=0;i<path.size();i++) {	// print path
 			System.out.println("path: " + path.get(i) + " value: " + path.get(i).getValue());
 		}
+		
 		return path;
 	}
 	
