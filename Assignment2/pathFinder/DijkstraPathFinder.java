@@ -79,12 +79,14 @@ public class DijkstraPathFinder implements PathFinder{
 		
 		List<Coordinate> path = new ArrayList<Coordinate>();
 		
-		if(waypoints == null) {
+		if(waypoints == null) { //if there are no way points
 			
-			//create a list with path
+			//create a list with the path
+			
+			// find lowest value destination
 			Node tempNode = S.get(S.size() -1);
 			int desValue = 1000;
-			for(int i=0;i<map.destCells.size();i++) {								// search for lowest value destination
+			for(int i=0;i<map.destCells.size();i++) {								
 				for(int k=0;k<S.size();k++) {
 					if (S.get(k).getCoordinate().equals(map.destCells.get(i)) && S.get(k).getCoordinate().getValue() < desValue){
 						tempNode = S.get(k);
@@ -93,15 +95,14 @@ public class DijkstraPathFinder implements PathFinder{
 				}
 			}
 			
-			//System.out.println(tempNode.getCoordinate());
+			// add to path
 			boolean des = false;
 			while(!des) {
-				path.add(tempNode.getCoordinate());						// add to path
-				if(map.originCells.contains(tempNode.getCoordinate())) {
+				path.add(tempNode.getCoordinate());						
+				if(map.originCells.contains(tempNode.getCoordinate())) { //if arrived to destination
 					des = true;
 				}
 				tempNode = tempNode.getPrevious();						// get the previous node
-				//System.out.println("add");
 			}
 		}
 		
@@ -138,8 +139,8 @@ public class DijkstraPathFinder implements PathFinder{
 			
 		}
 		
-		Collections.reverse(path);
-		
+		Collections.reverse(path); //reverse the list
+		//print (testing)
 		for(int i=0;i<path.size();i++) {	// print path
 			System.out.println("path: " + path.get(i) + " value: " + path.get(i).getValue());
 		}
