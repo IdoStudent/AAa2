@@ -75,7 +75,7 @@ public class DijkstraPathFinder implements PathFinder{
 	    				}
 	    		}
 	    	}
-			find();	// add smallest value coordinate to S
+			findLowVal();	// add smallest value coordinate to S
 			count++;
 		}
 		
@@ -104,7 +104,6 @@ public class DijkstraPathFinder implements PathFinder{
 					//create a list with path
 					findLowDes();
 					
-					//System.out.println(tempNode.getCoordinate());
 					boolean des = false;
 					while(!des) {
 						path.add(tempNode.getCoordinate());						// add to path
@@ -112,14 +111,13 @@ public class DijkstraPathFinder implements PathFinder{
 							des = true;
 						}
 						tempNode = tempNode.getPrevious();						// get the previous node
-						//System.out.println("add");
 					}
 				}
-			}
-			
+			}	
 		}
 		
 		Collections.reverse(path); //reverse the list
+		
 		//print (testing)
 		for(int i=0;i<path.size();i++) {	// print path
 			System.out.println("path: " + path.get(i) + " value: " + path.get(i).getValue());
@@ -132,13 +130,13 @@ public class DijkstraPathFinder implements PathFinder{
         return S.size();
     } // end of cellsExplored()
 	
-	public void find() {
-		//find smallest value
-		if(coordinates.isEmpty() == false) {
-			Node tempNode = coordinates.get(0);
+	public void findLowVal() {
+		//find lowest value
+		if(coordinates.isEmpty() == false) { //if coordinates list in not empty
+			tempNode = coordinates.get(0);	//set the first element of the list as lowest
 	    	int lowest = coordinates.get(0).getCoordinate().getValue();
 	    	int toDelete = 0;
-	    	for(int i=0;i<coordinates.size();i++) {
+	    	for(int i=0;i<coordinates.size();i++) {	//iterate through list. if found lower value. set as lowest value.
 	    		if(coordinates.get(i).getCoordinate().getValue() < lowest) {
 	    			lowest = coordinates.get(i).getCoordinate().getValue();
 	    			tempNode = coordinates.get(i);
