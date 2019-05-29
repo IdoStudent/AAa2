@@ -25,7 +25,7 @@ public class DijkstraPathFinder implements PathFinder{
 			for(int c=0;c<map.sizeC;c++) {
 				if(map.cells[r][c].getImpassable() == false) {
 					boolean origin = false;
-					map.cells[r][c].setValue(1000);						//set to infinity
+					map.cells[r][c].setValue(10000);						//set to infinity
 						if(map.originCells.contains(map.cells[r][c])) {	// if origin
 							map.cells[r][c].setValue(0);
 							S.add(new Node(map.cells[r][c],null));
