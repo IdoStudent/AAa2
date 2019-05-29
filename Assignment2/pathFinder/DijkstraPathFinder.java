@@ -103,7 +103,6 @@ public class DijkstraPathFinder implements PathFinder{
 				tempNode = tempNode.getPrevious();						// get the previous node
 				//System.out.println("add");
 			}
-
 		}
 		
 		else {
@@ -138,6 +137,8 @@ public class DijkstraPathFinder implements PathFinder{
 			}
 			
 		}
+		
+		Collections.reverse(path);
 		
 		for(int i=0;i<path.size();i++) {	// print path
 			System.out.println("path: " + path.get(i) + " value: " + path.get(i).getValue());

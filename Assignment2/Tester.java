@@ -11,7 +11,7 @@ public class Tester {
 		List<Coordinate> destCells = new ArrayList<Coordinate>();
 		Set<Coordinate> impassableCells = new HashSet<Coordinate>();
 		Map<Coordinate,Integer> terrainCells = new HashMap<Coordinate,Integer>();
-		List<Coordinate> waypointCells = null;
+		List<Coordinate> waypointCells = new ArrayList<Coordinate>();
 		
 		impassableCells.add(new Coordinate(2,2));
 		impassableCells.add(new Coordinate(3,2));
@@ -24,6 +24,9 @@ public class Tester {
 		
 		terrainCells.put(new Coordinate(5,2), 6);
 		terrainCells.put(new Coordinate(6,2), 6);
+		
+		waypointCells.add(new Coordinate(6,1));
+		
 		
 		PathMap map = new PathMap();
 		//map.initMap(rowNum, colNum, originCells, destCells, impassableCells, terrainCells, waypointCells);
@@ -63,6 +66,7 @@ public class Tester {
 
         map.destCells = destCells;
         map.originCells = originCells;
+        //map.waypointCells = waypointCells;
 		
 		DijkstraPathFinder test = new DijkstraPathFinder(map);
 		test.findPath();
