@@ -7,12 +7,14 @@ import java.util.*;
 
 public class DijkstraPathFinder implements PathFinder{
 	
-	List<Node> S;			//set of explored coordinates
-	List<Node> coordinates;	//set of all passable coordinates
-	List<Coordinate> waypoints;
-	int count = 0;			//counts elements in S
-	PathMap map;
-	int length = 0;			//amount of initial coordinates
+	private PathMap map;
+	private List<Node> S;			//set of explored coordinates
+	private List<Node> coordinates;	//set of all passable coordinates
+	private List<Coordinate> waypoints;
+	
+	private Node tempNode;
+	private int count = 0;			//counts elements in S
+	private int length = 0;			//amount of initial coordinates
 	
 	public DijkstraPathFinder(PathMap map) {
 		
@@ -82,19 +84,8 @@ public class DijkstraPathFinder implements PathFinder{
 		if(waypoints == null) { //if there are no way points
 			
 			//create a list with the path
-			
-			// find lowest value destination
-			Node tempNode = S.get(S.size() -1);
-			int desValue = 1000;
-			for(int i=0;i<map.destCells.size();i++) {								
-				for(int k=0;k<S.size();k++) {
-					if (S.get(k).getCoordinate().equals(map.destCells.get(i)) && S.get(k).getCoordinate().getValue() < desValue){
-						tempNode = S.get(k);
-						desValue = S.get(k).getCoordinate().getValue();
-					}
-				}
-			}
-			
+			findLowDes();
+
 			// add to path
 			boolean des = false;
 			while(!des) {
@@ -104,25 +95,14 @@ public class DijkstraPathFinder implements PathFinder{
 				}
 				tempNode = tempNode.getPrevious();						// get the previous node
 			}
-		}
-		
-		else {
 			
+		// If there are waypoints
+		}else {
 			for(int i=0; i<waypoints.size();i++) {
 				for(int j=0; j<waypoints.size();j++) {
 					
 					//create a list with path
-					Node tempNode = S.get(S.size() -1);
-					int desValue = 1000;
-					
-					for(int k=0;k<map.destCells.size();k++) {								// search for lowest value destination
-						for(int l=0;l<S.size();l++) {
-							if (S.get(k).getCoordinate().equals(map.destCells.get(i)) && S.get(k).getCoordinate().getValue() < desValue){
-								tempNode = S.get(k);
-								desValue = S.get(k).getCoordinate().getValue();
-							}
-						}
-					}
+					findLowDes();
 					
 					//System.out.println(tempNode.getCoordinate());
 					boolean des = false;
@@ -160,18 +140,27 @@ public class DijkstraPathFinder implements PathFinder{
 	    	int toDelete = 0;
 	    	for(int i=0;i<coordinates.size();i++) {
 	    		if(coordinates.get(i).getCoordinate().getValue() < lowest) {
-	    			//System.out.println("lower " + coordinates.get(i) + " value: " + coordinates.get(i).getCoordinate().getValue());
 	    			lowest = coordinates.get(i).getCoordinate().getValue();
 	    			tempNode = coordinates.get(i);
 	    			toDelete = i;
 	    		}
 	    	}
-	    	//System.out.println("add " + coordinates.get(toDelete).getCoordinate() + " value: " + coordinates.get(toDelete).getCoordinate().getValue());
 	    	coordinates.remove(toDelete);	//remove from coordinates
 	    	S.add(tempNode);				//add to S
-//	    	for(int i=0;i<S.size();i++) {
-//	    		System.out.println(S.get(i).getCoordinate());
-//	    	}
+		}
+	}
+	
+	public void findLowDes() {
+		// find lowest value destination
+		tempNode = S.get(S.size() -1);
+		int desValue = 1000;
+		for(int i=0;i<map.destCells.size();i++) {								
+			for(int k=0;k<S.size();k++) {
+				if (S.get(k).getCoordinate().equals(map.destCells.get(i)) && S.get(k).getCoordinate().getValue() < desValue){
+					tempNode = S.get(k);
+					desValue = S.get(k).getCoordinate().getValue();
+				}
+			}
 		}
 	}
 }
